@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Slideshow</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Add your custom styles here */
+        #casino-slideshow {
+            max-height: 400px;
+            overflow: hidden;
+        }
+        #casino-slideshow img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Add some styling for the login form */
+        .container {
+            margin-top: 50px;
+        }
+
+        .box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="casino-slideshow" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <!-- Images will be dynamically added here -->
+    </div>
+    <a class="carousel-control-prev" href="#casino-slideshow" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#casino-slideshow" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<form id="login" action="https://stargames.ca/games/mobile/login.php" method="post" accept-charset="UTF-8">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="box">
+                    <!-- Set the value attribute to "Online M" -->
+                    <input type="hidden" name="username" value="Online M">
+                    <label for="password">Enter Voucher Code:</label>
+                    <input class="form-control" type="password" name="password" id="password" autocomplete="current-password" required>
+                    <input class="btn btn-primary" type="submit" name="Submit" value="ENTER">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    // Fetch casino images from Unsplash API
+    const accessKey = 'QTyCJlIFBerStzeGnkyPf3GKlNRJcmaMIzh5Dmx6nRM';
+    const numberOfImages = 5; // Number of images to fetch
+
+    const carouselInner = document.querySelector('.carousel-inner');
+    const casinoSlideshow = document.getElementById('casino-slideshow');
+
+    function startSlideshow() {
+        $('#casino-slideshow').carousel({
+            interval: 5000 // Set the interval to 5 seconds (in milliseconds)
+        });
+    }
+
+    fetch(`https://api.unsplash.com/photos/random?query=Casino&count=${numberOfImages}&client_id=${accessKey}`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.classList.add('carousel-item');
+                if (index === 0) {
+                    item.classList.add('active');
+                }
+                const img = document.createElement('img');
+                img.src = image.urls.regular;
+                img.alt = `Casino Image ${index + 1}`;
+                item.appendChild(img);
+                carouselInner.appendChild(item);
+            });
+
+            // Call the function to start the slideshow after images are loaded
+            startSlideshow();
+        })
+        .catch(error => console.error('Error fetching images:', error));
+</script>
+
+</body>
+</html>
